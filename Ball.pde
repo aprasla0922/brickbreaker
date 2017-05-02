@@ -104,11 +104,11 @@ class Ball {
     //bounce against walls
     if(xpos < size/2 || xpos > (width - size/2)){
       vx = vx * -1;
-      addSparkles();
+     //addSparkles();
     }
     if (ypos < size/2){
       vy = vy * -1;
-      addSparkles();
+      //addSparkles();
     }
     
     //ball hits paddle
@@ -142,7 +142,7 @@ class Ball {
         else{
           vx = vx * -1;
         } 
-        addSparkles();
+        //addSparkles();
       }
     }
   }
