@@ -158,6 +158,7 @@ class Ball {
     xpos = initialBallX;
     ypos = initialBallY;
     speed = 5;
+    this.start = false;
   }
 }
 

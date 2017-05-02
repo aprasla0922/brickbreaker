@@ -50,6 +50,9 @@ void draw(){
   for (int i = 0; i < Powerups.size(); i ++){
     Powerups.get(i).Show();
   }
+  if (Bricks.size() == 0) {
+    gameOver = true;
+  }
   currentGame.display();
   ball.Move();
   
@@ -73,7 +76,7 @@ void draw(){
   }
 }
 void keyPressed(){
- if (key == ' '){
+ if (key == ' ' && ball.start == false){
    ball.release();
    ball.start = true;
  }
