@@ -12,6 +12,7 @@ int paddleX;
 boolean paddleLeft = false, paddleRight = false;
 
 ScoreKeeping currentGame;
+Highscore highscore;
 void setup(){
   paddleX = width/2-80;
   paddle = loadImage("paddle.png");
@@ -38,6 +39,9 @@ void setup(){
   initialBallY = height - ballSize-30;
   ball = new Ball(initialBallX, initialBallY,ballSize,5);
   currentGame = new ScoreKeeping();
+  
+  highscore = new Highscore();
+  highscore.readHighscore();
 }
 
 void draw(){
@@ -81,6 +85,7 @@ void keyPressed(){
    ball.start = true;
  }
  if (key == ENTER){
+      highscore.addScore("Player1", currentGame.Score);
       currentGame = new ScoreKeeping();
       ball.reset();
       //reset board  
@@ -88,15 +93,15 @@ void keyPressed(){
       int lowbound = 100;
       int highbound = width - 100;
       //create background
-      for (int col = 100; col < height /2; col += 20)
-      {
-      for (int row = lowbound; row < highbound; row += 60){
-        Brick b = new Brick(row,col,20);
-        Bricks.add(b);
+      for (int col = 100; col < height /2; col += 20){
+        for (int row = lowbound; row < highbound; row += 60){
+          Brick b = new Brick(row,col,20);
+          Bricks.add(b);
+        }
+        lowbound += 60;
+        highbound -= 60;
       }
-      lowbound += 60;
-      highbound -= 60;
-    } 
+      highscore.writeHighscore();
   }
   if (key == CODED) {
     if (keyCode == LEFT) {
