@@ -1,3 +1,10 @@
+/* TODO:
+ * Add laser paddle animation powerup
+ * Additional Levels
+ * Different types of bricks: moving bricks, stone bricks (can't break and are there for obstruction)
+ * Menu
+*/
+
 ArrayList <Brick> Bricks;
 ArrayList <Powerup> Powerups;
 Ball ball;
@@ -7,7 +14,7 @@ float ballSize = 30;
 float initialBallY;
 boolean gameOver = false;
 PImage paddle;
-PImage powup;
+PImage[] powup;
 int paddleX;
 boolean paddleLeft = false, paddleRight = false;
 
@@ -15,7 +22,7 @@ ScoreKeeping currentGame;
 void setup(){
   paddleX = width/2-80;
   paddle = loadImage("paddle.png");
-  powup = loadImage("powerup.png");
+  powup = new PImage[]{loadImage("heart.png"), loadImage("hourglass.png"), loadImage("powerup.png"), loadImage("laser.png")};
   Bricks = new ArrayList<Brick>();
   Powerups = new ArrayList<Powerup>();
   size(1062,600);
