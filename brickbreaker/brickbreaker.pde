@@ -1,0 +1,119 @@
+
+ArrayList <Brick> Bricks;
+ArrayList <Powerup> Powerups;
+Ball ball;
+color backColor = color(255, 215, 0);
+float initialBallX;
+float ballSize = 30;
+float initialBallY;
+boolean gameOver = false;
+PImage paddle;
+PImage powup;
+int paddleX;
+boolean paddleLeft = false, paddleRight = false;
+ScoreKeeping currentGame;
+
+boolean levelStart = true;
+Level levelHandler;
+void setup() {
+  paddleX = width/2-80;
+  paddle = loadImage("paddle.png");
+  powup = loadImage("powerup.png");
+  Bricks = new ArrayList<Brick>();
+  Powerups = new ArrayList<Powerup>();
+  size(1062, 600);
+  background(backColor);
+
+  //row staggering variables
+  //create background
+  
+  String fileNameOne = "C:\\Users\\Ali\\Desktop\\COOKEM CORNS\\Ali Prasla and the Prisoner of Aksaban\\Spring 2017\\Graphics\\FinalProject\\brickbreaker\\LevelOne.csv"; 
+  String fileNameTwo = "C:\\Users\\Ali\\Desktop\\COOKEM CORNS\\Ali Prasla and the Prisoner of Aksaban\\Spring 2017\\Graphics\\FinalProject\\brickbreaker\\LevelTwo.csv";
+  String fileNameThree = "C:\\Users\\Ali\\Desktop\\COOKEM CORNS\\Ali Prasla and the Prisoner of Aksaban\\Spring 2017\\Graphics\\FinalProject\\brickbreaker\\LevelThree.csv";
+  levelHandler = new Level(fileNameOne,fileNameTwo,fileNameThree);
+  
+  
+  initialBallX = width/2;
+  initialBallY = height - ballSize-30;
+  ball = new Ball(initialBallX, initialBallY, ballSize, 5);
+  currentGame = new ScoreKeeping();
+}
+
+void draw() {
+  background(backColor);
+  image(paddle, paddleX, 565, paddle.width/3, paddle.height/6);
+  ball.Move();
+  levelHandler.Load(3);
+  currentGame.display();
+  if (paddleLeft) {
+    if (paddleX-20 > 0) {
+      paddleX-=20;
+      if (!ball.start) { 
+        ball.xpos-=20;
+      }
+    } else if (paddleX > 0) {
+      if (!ball.start) {
+        ball.xpos=ball.xpos-paddleX;
+      }
+      paddleX = 0;
+    }
+  } else if (paddleRight) {
+    float pright = paddleX+paddle.width/3;
+    if (pright+20 < width) {
+      paddleX+=20;
+      if (!ball.start) { 
+        ball.xpos+=20;
+      }
+    } else if (pright < width) {
+      if (!ball.start) {
+        ball.xpos = ball.xpos + width-pright;
+      } 
+      paddleX+= width-pright;
+    }
+  }
+  
+}
+void keyPressed() {
+  if (key == ' ' && ball.start == false) {
+    ball.release();
+    ball.start = true;
+    levelStart = false;
+  }
+  if (key == ENTER) {
+    currentGame = new ScoreKeeping();
+    ball.reset();
+    //reset board  
+    
+    
+    Bricks.clear();
+    int lowbound = 100;
+    int highbound = width - 100;
+    //create background
+    for (int col = 100; col < height /2; col += 20)
+    {
+      for (int row = lowbound; row < highbound; row += 60) {
+        Brick b = new Brick(row, col, 20, 4);
+        Bricks.add(b);
+      }
+      lowbound += 60;
+      highbound -= 60;
+    }
+  }
+  if (key == CODED) {
+    if (keyCode == LEFT) {
+      paddleLeft = true;
+    } else if (keyCode == RIGHT) {
+      paddleRight = true;
+    }
+  }
+}
+
+void keyReleased() {
+  if (key == CODED) {
+    if (keyCode == LEFT) {
+      paddleLeft = false;
+    } else if (keyCode == RIGHT) {
+      paddleRight = false;
+    }
+  }
+}
