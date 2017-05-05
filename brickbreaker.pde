@@ -5,7 +5,7 @@ color backColor = color(255,215,0);
 float initialBallX;
 float ballSize = 30;
 float initialBallY;
-boolean gameOver = false;
+boolean gameOver = true;
 PImage paddle;
 PImage powup;
 int paddleX;
