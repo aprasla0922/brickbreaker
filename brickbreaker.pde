@@ -49,7 +49,10 @@ void draw(){
   image(paddle,paddleX,565,paddle.width/3,paddle.height/6);
   //image(paddle,paddleX+50,565,paddle.width/6,paddle.height/6);
   for (int i = 0; i < Bricks.size(); i ++){
-    Bricks.get(i).Show();
+    Brick b = Bricks.get(i);
+    if(!b.dead){
+      b.Show();
+    }
   }
   for (int i = 0; i < Powerups.size(); i ++){
     Powerups.get(i).Show();
