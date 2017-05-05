@@ -12,7 +12,6 @@ int paddleX;
 boolean paddleLeft = false, paddleRight = false;
 
 ScoreKeeping currentGame;
-Highscore highscore;
 void setup(){
   paddleX = width/2-80;
   paddle = loadImage("paddle.png");
@@ -39,9 +38,6 @@ void setup(){
   initialBallY = height - ballSize-30;
   ball = new Ball(initialBallX, initialBallY,ballSize,5);
   currentGame = new ScoreKeeping();
-  
-  highscore = new Highscore();
-  highscore.readHighscore();
 }
 
 void draw(){
@@ -61,34 +57,42 @@ void draw(){
     gameOver = true;
   }
   currentGame.display();
-  ball.Move();
-  
-  if(paddleLeft){
-    if (paddleX-20 > 0) {
-        paddleX-=20;
-        if (!ball.start) { ball.xpos-=20; }
-      } else if (paddleX > 0) {
-        if (!ball.start) {ball.xpos=ball.xpos-paddleX; }
-        paddleX = 0;
-      } 
-  }else if(paddleRight){
-    float pright = paddleX+paddle.width/3;
-      if (pright+20 < width) {
-        paddleX+=20;
-        if (!ball.start) { ball.xpos+=20; }
-      } else if (pright < width) {
-        if (!ball.start) {ball.xpos = ball.xpos + width-pright; } 
-        paddleX+= width-pright;
-      }
+  if(!gameOver){
+    ball.Move();
+    
+    if(paddleLeft){
+      if (paddleX-20 > 0) {
+          paddleX-=20;
+          if (!ball.start) { ball.xpos-=20; }
+        } else if (paddleX > 0) {
+          if (!ball.start) {ball.xpos=ball.xpos-paddleX; }
+          paddleX = 0;
+        } 
+    }else if(paddleRight){
+      float pright = paddleX+paddle.width/3;
+        if (pright+20 < width) {
+          paddleX+=20;
+          if (!ball.start) { ball.xpos+=20; }
+        } else if (pright < width) {
+          if (!ball.start) {ball.xpos = ball.xpos + width-pright; } 
+          paddleX+= width-pright;
+        }
+    }
   }
 }
 void keyPressed(){
+  if(gameOver){
+    if(key==BACKSPACE){
+      currentGame.deleteLetter();
+    }else if((key >= 'A' && key <= 'Z') || (key >= 'a' && key <= 'z')){
+      currentGame.inputname += key; 
+    }
+  }
  if (key == ' ' && ball.start == false){
    ball.release();
    ball.start = true;
- }
- if (key == ENTER){
-      highscore.addScore("Player1", currentGame.Score);
+ }else if (key == ENTER){
+      currentGame.addScore();
       currentGame = new ScoreKeeping();
       ball.reset();
       //reset board  
@@ -104,9 +108,7 @@ void keyPressed(){
         lowbound += 60;
         highbound -= 60;
       }
-      highscore.writeHighscore();
-  }
-  if (key == CODED) {
+  }else if (key == CODED) {
     if (keyCode == LEFT) {
       paddleLeft = true;
     } else if (keyCode == RIGHT) {

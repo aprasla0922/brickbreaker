@@ -1,8 +1,11 @@
 class ScoreKeeping{
+  color backColor = color(255,215,0);
   int Score = 0;
   int LivesLeft = 3;
   ArrayList<PImage> livesLeft = new ArrayList<PImage>();
   PImage heart;
+  String inputname = "";
+  Highscore highscore;
   public ScoreKeeping(){
     heart = loadImage("heart.png");
     for (int i = 0; i < 3; i ++){
@@ -15,6 +18,8 @@ class ScoreKeeping{
     text("Game Over",300,height/2+75); 
     textSize(20);
     text("Press Enter to Restart", 450, height/2 + 100);
+    highscore = new Highscore();
+    highscore.readHighscore();
   }
   public void display(){
     textSize(16);
@@ -32,10 +37,15 @@ class ScoreKeeping{
       text("Press Space to Begin", 450, height/2 + 100);
     }
     if (gameOver){
+      background(backColor);
       textSize(100);
-      text("Game Over",300,height/2+75); 
+      text("Game Over",300,height/2-200); 
       textSize(20);
-      text("Press Enter to Restart", 450, height/2 + 100);
+      text("Your score: " + Score, 450, height/2 - 75);
+      text("Enter your name: " + inputname, 450, height/2 - 100);
+      for(int i =0; i<10; i++){
+        text(highscore.highscores[i][0] + "        " + highscore.highscores[i][1], 450, height/2 + i*25);
+      }
     }
   }
   public void loseLife(){
@@ -51,4 +61,14 @@ class ScoreKeeping{
   public void gainLife(){
     livesLeft.add(heart);
   }
+  
+  public void addScore(){
+    highscore.addScore(inputname, Score); 
+    highscore.writeHighscore();
+  }
+  
+  public void deleteLetter(){
+    inputname = inputname.substring(0, inputname.length()-1);
+  }
+  
   }
