@@ -41,7 +41,7 @@ class ScoreKeeping{
       textSize(100);
       text("Game Over",300,height/2-200); 
       textSize(20);
-      text("Press Enter to Continue Game", 375, height/2 - 150);
+      text("Press Enter to Submit Score and Play Again", 325, height/2 - 150);
       text("Your score: " + Score, 450, height/2 - 125);
       text("Enter your name: " + inputname, 440, height/2 - 100);
       text("Highscores:", 445, height/2 - 35);
@@ -51,12 +51,13 @@ class ScoreKeeping{
     }
   }
   public void loseLife(){
-    if (livesLeft.size() != 0)
+    if (livesLeft.size() != 1)
     {
       livesLeft.remove(livesLeft.get(livesLeft.size()-1));
     }
     else
     {
+      livesLeft.remove(livesLeft.get(livesLeft.size() -1));
       gameOver = true;
     }
     }
