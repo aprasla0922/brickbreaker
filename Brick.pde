@@ -12,8 +12,10 @@ class Brick{
     ypos = yp;
     size = sizep;
     stroke(backColor);
-    health = this.health;
+    this.health = health;
+    if (health >= 0){
     fill(colors[health]);
+    }
     strokeWeight(2);
     rect(xp,yp,size*3,size);
     animation = new BreakAnimation(xpos, ypos, size);
