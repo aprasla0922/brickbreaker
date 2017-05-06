@@ -12,6 +12,7 @@ class ScoreKeeping{
       livesLeft.add(heart);
     }
     gameOver = false;    // set to true for game over screen debugging
+    currentLevel = 1;
     //clear text
     fill(backColor);
     textSize(100);
@@ -57,6 +58,7 @@ class ScoreKeeping{
       for(int i =0; i<10; i++){
         text(highscore.highscores[i][0] + "        " + highscore.highscores[i][1], 450, height/2 + i*25);
       }
+      currentLevel = 1;
     }
   }
   
@@ -69,6 +71,7 @@ class ScoreKeeping{
     {
       livesLeft.remove(livesLeft.get(livesLeft.size() -1));
       gameOver = true;
+      currentLevel = 1;
     }
   }
   

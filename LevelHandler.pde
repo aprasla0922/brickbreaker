@@ -12,7 +12,6 @@ class Level {
     this.fileThree = fileThree;
   }
   public void Load(int whichLevel) {
-    println(levelStart);
     if (levelStart == true)
     {
       String currentFile = "";
@@ -44,18 +43,20 @@ class Level {
       for (int i = 0; i < Powerups.size(); i ++) {
         Powerups.get(i).Show();
       }
-      if (Bricks.size() == 0) {
+      if(gameOver){
+        currentLevel = 1;
+      }
+      else if (Bricks.size() == 0) {
         if (currentLevel != 3) {
           currentLevel += 1;
           levelStart = true;
           paddleX = width/2-80;
           //reset position
           ball.reset();
-        }
-        else if (currentLevel == 3){
+        } else if (currentLevel == 3) {
           gameOver = true;
         }
-      } 
-    } 
+      }
+    }
   }
 }

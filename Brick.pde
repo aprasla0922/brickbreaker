@@ -40,7 +40,7 @@ class Brick{
         currentGame.Score += 10;
         if (power) {
           Random r = new Random();
-          int x = r.nextInt(10);
+          int x = r.nextInt(20);
           if (x<=3) {
             Powerups.add(new Powerup(xpos,ypos,8,x));
           }

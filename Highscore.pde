@@ -32,6 +32,8 @@ class Highscore{
       highscores[i] = tmp.clone();
       tmp = tmp1.clone();
     }
+    currentLevel = 1;
+    println("score submitted");
   }
   
   public void writeHighscore(){
