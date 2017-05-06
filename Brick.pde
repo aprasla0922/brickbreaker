@@ -7,13 +7,12 @@ class Brick{
   color[] colors = {color(200,200,200), color(30,136,229), color(38,166,154), color(229,57,53), color(94,53,177)};
   BreakAnimation animation;
   
-  public Brick(float xp,float yp,float sizep){
+  public Brick(float xp,float yp,float sizep, int health){
     xpos = xp;
     ypos = yp;
     size = sizep;
     stroke(backColor);
-    Random rand = new Random();
-    health = rand.nextInt(5);
+    health = this.health;
     fill(colors[health]);
     strokeWeight(2);
     rect(xp,yp,size*3,size);

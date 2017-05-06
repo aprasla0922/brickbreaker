@@ -5,13 +5,17 @@ color backColor = color(255,215,0);
 float initialBallX;
 float ballSize = 30;
 float initialBallY;
-boolean gameOver = true;
+boolean gameOver = false;
 PImage paddle;
 PImage powup;
 int paddleX;
 boolean paddleLeft = false, paddleRight = false;
-
+//Level start is the indicator that the level has begun (ball is stationary)
+boolean levelStart = true;
+Level levelHandler;
+int currentLevel = 1;
 ScoreKeeping currentGame;
+
 void setup(){
   paddleX = width/2-80;
   paddle = loadImage("paddle.png");
@@ -22,27 +26,18 @@ void setup(){
   background(backColor);
   
   //row staggering variables
-  int lowbound = 100;
-  int highbound = width - 100;
-  //create background
-  for (int col = 100; col < height /2; col += 20)
-  {
-    for (int row = lowbound; row < highbound; row += 60){
-      Brick b = new Brick(row,col,20);
-      Bricks.add(b);
-    }
-    lowbound += 60;
-    highbound -= 60;
-  }
   initialBallX = width/2;
   initialBallY = height - ballSize-30;
   ball = new Ball(initialBallX, initialBallY,ballSize,5);
   currentGame = new ScoreKeeping();
+  levelHandler = new Level("LevelOne.csv","LevelTwo.csv","LevelThree.csv");
 }
 
 void draw(){
   background(backColor);
   image(paddle,paddleX,565,paddle.width/3,paddle.height/6);
+  levelHandler.Load(currentLevel);
+  currentGame.display();
   //image(paddle,paddleX+50,565,paddle.width/6,paddle.height/6);
   for (int i = 0; i < Bricks.size(); i ++){
     Brick b = Bricks.get(i);
@@ -53,13 +48,12 @@ void draw(){
   for (int i = 0; i < Powerups.size(); i ++){
     Powerups.get(i).Show();
   }
-  if (Bricks.size() == 0) {
+  if (Bricks.size() == 0 && currentLevel > 3) {
     gameOver = true;
   }
   currentGame.display();
   if(!gameOver){
     ball.Move();
-    
     if(paddleLeft){
       if (paddleX-20 > 0) {
           paddleX-=20;
@@ -101,6 +95,9 @@ void keyPressed(){
       paddleRight = true;
     }
   }
+  if(key == ' '){
+    levelStart = false;
+  }
 }
 
 void keyReleased(){
@@ -122,16 +119,6 @@ void mousePressed(){
     ball.reset();
     //reset board  
     Bricks.clear();
-    int lowbound = 100;
-    int highbound = width - 100;
-    //create background
-    for (int col = 100; col < height /2; col += 20){
-    for (int row = lowbound; row < highbound; row += 60){
-    Brick b = new Brick(row,col,20);
-    Bricks.add(b);
-    }
-    lowbound += 60;
-    highbound -= 60;
-    }
+    levelHandler.Load(currentLevel);
   }
 }

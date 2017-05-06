@@ -15,42 +15,42 @@ class Level{
     if(levelStart == true)
     {
       String currentFile = "";
-      if(whichLevel == 1)
+      if (whichLevel == 1)
       {
-          currentFile = fileOne;
+        currentFile = fileOne;
       }
       else if (whichLevel == 2)
       {
         currentFile = fileTwo;
       }
-      else{
+      else if( whichLevel ==3){
         currentFile = fileThree;
       }
     Bricks.clear();
-    BufferedReader br =  null;
-    String line = "";
-    try {
-      br = new BufferedReader(new FileReader(currentFile));
-      while ((line = br.readLine()) != null) {
-        String[] brickData = line.split(",");
-        Bricks.add(new Brick(Float.parseFloat(brickData[0]),Float.parseFloat(brickData[1]),Float.parseFloat(brickData[2]),Integer.parseInt(brickData[3])));
+    Table levelData = loadTable(currentFile);
+      for (TableRow r : levelData.rows()) {
+        String x = r.getString(0);
+        String y = r.getString(1);
+        String size = r.getString(2);
+        String health = r.getString(3);
+        Bricks.add(new Brick(Float.parseFloat(x),Float.parseFloat(y),Float.parseFloat(size),Integer.parseInt(health)));
       }
-    } 
-    catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } 
-    catch (IOException e) {
-            e.printStackTrace();
+        
       }
-    }
-  else
-  {
+    else{
       for (int i = 0; i < Bricks.size(); i ++) {
         Bricks.get(i).Show();
       }
       for (int i = 0; i < Powerups.size(); i ++) {
         Powerups.get(i).Show();
-      } 
+      }
+      if (Bricks.size() == 0) {
+        if(currentLevel != 3){
+          print("next level");
+          currentLevel += 1;
+          levelStart = true;
+        }
+      }
     }
   }
 }
