@@ -39,18 +39,7 @@ void draw(){
   levelHandler.Load(currentLevel);
   currentGame.display();
   //image(paddle,paddleX+50,565,paddle.width/6,paddle.height/6);
-  for (int i = 0; i < Bricks.size(); i ++){
-    Brick b = Bricks.get(i);
-    if(!b.dead){
-      b.Show();
-    }
-  }
-  for (int i = 0; i < Powerups.size(); i ++){
-    Powerups.get(i).Show();
-  }
-  if (Bricks.size() == 0 && currentLevel > 3) {
-    gameOver = true;
-  }
+
   currentGame.display();
   if(!gameOver){
     ball.Move();

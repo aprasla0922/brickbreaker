@@ -1,3 +1,4 @@
+TopScore 2040
 Irfan 600
 xxx 430
 Fart 430
@@ -5,6 +6,5 @@ Player1 40
 xxx 20
 Player1 10
 Goodmorning 10
-xxx 0
 xxx 0
 xxx 0
