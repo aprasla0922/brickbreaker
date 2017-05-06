@@ -3,12 +3,14 @@ import java.util.Random;
 class Powerup{
   float xpos;float ypos; float size;
   int type; // 0 = health, 1 = slow ball, 2 = break all, 3 = ball fast
+  
   public Powerup(float xp,float yp,float sizep, int t){
     xpos = xp;
     ypos = yp;
     size = sizep;
     type = t;
   }
+  
   public void Show(){
     ypos+=5;
     image(powup,xpos,ypos,powup.width/size,powup.height/size);

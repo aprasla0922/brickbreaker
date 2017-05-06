@@ -1,8 +1,8 @@
 Irfan 600
 Player1 40
+xxx 20
 Player1 10
-xxx 0
-xxx 0
+Goodmorning 10
 xxx 0
 xxx 0
 xxx 0

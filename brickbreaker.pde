@@ -80,7 +80,9 @@ void draw(){
     }
   }
 }
+
 void keyPressed(){
+  // enter name for high score
   if(gameOver){
     if(key==BACKSPACE){
       currentGame.deleteLetter();
@@ -88,27 +90,11 @@ void keyPressed(){
       currentGame.inputname += key; 
     }
   }
- if (key == ' ' && ball.start == false){
-   ball.release();
-   ball.start = true;
- }else if (key == ENTER){
-      currentGame.addScore();
-      currentGame = new ScoreKeeping();
-      ball.reset();
-      //reset board  
-      Bricks.clear();
-      int lowbound = 100;
-      int highbound = width - 100;
-      //create background
-      for (int col = 100; col < height /2; col += 20){
-        for (int row = lowbound; row < highbound; row += 60){
-          Brick b = new Brick(row,col,20);
-          Bricks.add(b);
-        }
-        lowbound += 60;
-        highbound -= 60;
-      }
-  }else if (key == CODED) {
+  // resets ball
+  if (key == ' ' && ball.start == false){
+    ball.release();
+    ball.start = true;
+  }else if (key == CODED) {  // move paddle
     if (keyCode == LEFT) {
       paddleLeft = true;
     } else if (keyCode == RIGHT) {
@@ -118,11 +104,34 @@ void keyPressed(){
 }
 
 void keyReleased(){
+  // move paddle
   if(key == CODED){
     if(keyCode == LEFT){
       paddleLeft = false; 
     }else if(keyCode == RIGHT){
       paddleRight = false; 
+    }
+  }
+}
+
+void mousePressed(){
+  // the button click in game over screen & resets the game
+  if(325<mouseX && mouseX<745 && (height/2-175)<mouseY && mouseY<(height/2-140) && gameOver){
+    currentGame.addScore();
+    currentGame = new ScoreKeeping();
+    ball.reset();
+    //reset board  
+    Bricks.clear();
+    int lowbound = 100;
+    int highbound = width - 100;
+    //create background
+    for (int col = 100; col < height /2; col += 20){
+    for (int row = lowbound; row < highbound; row += 60){
+    Brick b = new Brick(row,col,20);
+    Bricks.add(b);
+    }
+    lowbound += 60;
+    highbound -= 60;
     }
   }
 }

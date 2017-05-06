@@ -2,11 +2,11 @@ import java.util.Random;
 
 class Brick{
   float xpos;float ypos; float size;
-  boolean dead = false;
-  boolean scoreAdd = false;
+  boolean dead = false;    // a brick is dead
   int health;
   color[] colors = {color(200,200,200), color(30,136,229), color(38,166,154), color(229,57,53), color(94,53,177)};
   BreakAnimation animation;
+  
   public Brick(float xp,float yp,float sizep){
     xpos = xp;
     ypos = yp;
@@ -19,6 +19,7 @@ class Brick{
     rect(xp,yp,size*3,size);
     animation = new BreakAnimation(xpos, ypos, size);
   }
+  
   public void Show(){
     stroke(backColor);
     if(health<0) fill(colors[0]);
@@ -26,16 +27,17 @@ class Brick{
     strokeWeight(2);
     rect(xpos,ypos,size*3,size);
   }
+  
   public void disappear(){
     stroke(backColor);
     fill(backColor);
     rect(xpos,ypos,size*3,size);
   }
+  
   public void die(boolean power){
     health--; 
     if (health < 0) {
-      dead = true;
-      if(!scoreAdd){
+      if(!dead){
         currentGame.Score += 10;
         if (power) {
           Random r = new Random();
@@ -44,7 +46,7 @@ class Brick{
             Powerups.add(new Powerup(xpos,ypos,8,x));
           }
         }
-        scoreAdd = true;
+        dead = true;
       }
     }
   }

@@ -91,6 +91,7 @@ class Ball {
     fill(backColor);
     text("Press Space to Begin", 450, height/2 + 100);
   }
+  
   public void Move(){
     //println("Vel - " + vx + " " + vy);
     if (gameOver){
@@ -127,9 +128,9 @@ class Ball {
     //next step - bounce against bricks
     for (int i = 0; i < Bricks.size(); i ++){
       Brick current = Bricks.get(i);
-      if(current.dead){
+      if(current.dead){    // a brick is dead
          current.animation.Show();
-         if(current.animation.terminate){
+         if(current.animation.terminate){    // brick breaking animation has ended
            Bricks.remove(current); 
          }
       }else if(isBetween(xpos,current.xpos,current.xpos + current.size*3) && isBetween(ypos,current.ypos,current.ypos +current.size)){
