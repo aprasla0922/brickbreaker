@@ -10,6 +10,7 @@ class Powerup{
     type = t;
     
   }
+  
   public void Show(){
     ypos+=5;
     image(powup[type],xpos,ypos,powup[type].width/size,powup[type].height/size);

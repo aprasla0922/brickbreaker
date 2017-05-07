@@ -14,12 +14,9 @@ class Highscore{
      }
   }
   
-  public void addHighscore(String name, int score){
+  public void addScore(String name, int score){
     for(int i =0; i<10; i++){
-      if(highscores[i]==null){
-        highscores[i][0] = name;
-        highscores[i][1] = "" + score;
-      }else if(score>Integer.parseInt(highscores[i][1])){
+      if(score>Integer.parseInt(highscores[i][1])){
         insertScore(i, name, score);
         return;
       }
@@ -31,10 +28,12 @@ class Highscore{
     String[] tmp1 = new String[2];
     tmp[0] = name; tmp[1] = ""+score;
     for(int i = pos; i<10; i++){
-      tmp1 = highscores[pos].clone();
-      highscores[pos] = tmp.clone();
+      tmp1 = highscores[i].clone();
+      highscores[i] = tmp.clone();
       tmp = tmp1.clone();
     }
+    currentLevel = 1;
+    println("score submitted");
   }
   
   public void writeHighscore(){
@@ -43,5 +42,11 @@ class Highscore{
       writer.println(highscores[i][0] + " " + highscores[i][1]);
     }
     writer.close();
+  }
+  
+  public void printHighscore(){
+    for(int i=0; i<highscores.length; i++){
+      println(highscores[i][0] + " " + highscores[i][1]);
+    }
   }
 }

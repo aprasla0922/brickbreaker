@@ -1,14 +1,7 @@
-/* TODO:
- * Add laser paddle animation powerup
- * Additional Levels
- * Different types of bricks: moving bricks, stone bricks (can't break and are there for obstruction)
- * Menu
-*/
-
 ArrayList <Brick> Bricks;
 ArrayList <Powerup> Powerups;
 Ball ball;
-color backColor = color(255,215,0);
+color backColor = color(255, 215, 0);
 float initialBallX;
 float ballSize = 30;
 float initialBallY;
@@ -17,109 +10,117 @@ PImage paddle;
 PImage[] powup;
 int paddleX;
 boolean paddleLeft = false, paddleRight = false;
-
+//Level start is the indicator that the level has begun (ball is stationary)
+boolean levelStart = true;
+Level levelHandler;
+int currentLevel = 1;
 ScoreKeeping currentGame;
-void setup(){
+
+void setup() {
   paddleX = width/2-80;
   paddle = loadImage("paddle.png");
   powup = new PImage[]{loadImage("heart.png"), loadImage("hourglass.png"), loadImage("powerup.png"), loadImage("laser.png")};
   Bricks = new ArrayList<Brick>();
   Powerups = new ArrayList<Powerup>();
-  size(1062,600);
+  size(1062, 600);
   background(backColor);
-  
+
   //row staggering variables
-  int lowbound = 100;
-  int highbound = width - 100;
-  //create background
-  for (int col = 100; col < height /2; col += 20)
-  {
-    for (int row = lowbound; row < highbound; row += 60){
-      Brick b = new Brick(row,col,20);
-      Bricks.add(b);
-    }
-    lowbound += 60;
-    highbound -= 60;
-  }
   initialBallX = width/2;
   initialBallY = height - ballSize-30;
-  ball = new Ball(initialBallX, initialBallY,ballSize,5);
+  ball = new Ball(initialBallX, initialBallY, ballSize, 5);
   currentGame = new ScoreKeeping();
+  levelHandler = new Level("LevelOne.csv", "LevelTwo.csv", "LevelThree.csv");
 }
 
-void draw(){
+void draw() {
   background(backColor);
-  image(paddle,paddleX,565,paddle.width/3,paddle.height/6);
-  //image(paddle,paddleX+50,565,paddle.width/6,paddle.height/6);
-  for (int i = 0; i < Bricks.size(); i ++){
-    Bricks.get(i).Show();
-  }
-  for (int i = 0; i < Powerups.size(); i ++){
-    Powerups.get(i).Show();
-  }
-  if (Bricks.size() == 0) {
-    gameOver = true;
-  }
+  image(paddle, paddleX, 565, paddle.width/3, paddle.height/6);
   currentGame.display();
-  ball.Move();
-  
-  if(paddleLeft){
-    if (paddleX-20 > 0) {
+  levelHandler.Load(currentLevel);
+  //image(paddle,paddleX+50,565,paddle.width/6,paddle.height/6);
+  if (!gameOver) {
+    ball.Move();
+    if (paddleLeft) {
+      if (paddleX-20 > 0) {
         paddleX-=20;
-        if (!ball.start) { ball.xpos-=20; }
+        if (!ball.start) { 
+          ball.xpos-=20;
+        }
       } else if (paddleX > 0) {
-        if (!ball.start) {ball.xpos=ball.xpos-paddleX; }
+        if (!ball.start) {
+          ball.xpos=ball.xpos-paddleX;
+        }
         paddleX = 0;
-      } 
-  }else if(paddleRight){
-    float pright = paddleX+paddle.width/3;
+      }
+    } else if (paddleRight) {
+      float pright = paddleX+paddle.width/3;
       if (pright+20 < width) {
         paddleX+=20;
-        if (!ball.start) { ball.xpos+=20; }
+        if (!ball.start) { 
+          ball.xpos+=20;
+        }
       } else if (pright < width) {
-        if (!ball.start) {ball.xpos = ball.xpos + width-pright; } 
+        if (!ball.start) {
+          ball.xpos = ball.xpos + width-pright;
+        } 
         paddleX+= width-pright;
       }
+    }
+  } else{
+    Bricks.clear();
   }
 }
-void keyPressed(){
- if (key == ' ' && ball.start == false){
-   ball.release();
-   ball.start = true;
- }
- if (key == ENTER){
-      currentGame = new ScoreKeeping();
-      ball.reset();
-      //reset board  
-      Bricks.clear();
-      int lowbound = 100;
-      int highbound = width - 100;
-      //create background
-      for (int col = 100; col < height /2; col += 20)
-      {
-      for (int row = lowbound; row < highbound; row += 60){
-        Brick b = new Brick(row,col,20);
-        Bricks.add(b);
-      }
-      lowbound += 60;
-      highbound -= 60;
-    } 
+
+void keyPressed() {
+  // enter name for high score
+  if (gameOver) {
+    if (key==BACKSPACE) {
+      currentGame.deleteLetter();
+    } else if ((key >= 'A' && key <= 'Z') || (key >= 'a' && key <= 'z')) {
+      currentGame.inputname += key;
+    }
   }
-  if (key == CODED) {
+  // resets ball
+  if (key == ' ' && ball.start == false) {
+    ball.release();
+    ball.start = true;
+  } else if (key == CODED) {  // move paddle
     if (keyCode == LEFT) {
       paddleLeft = true;
     } else if (keyCode == RIGHT) {
       paddleRight = true;
     }
   }
+  if (key == ' ') {
+    levelStart = false;
+  }
 }
 
-void keyReleased(){
-  if(key == CODED){
-    if(keyCode == LEFT){
-      paddleLeft = false; 
-    }else if(keyCode == RIGHT){
-      paddleRight = false; 
+void keyReleased() {
+  // move paddle
+  if (key == CODED) {
+    if (keyCode == LEFT) {
+      paddleLeft = false;
+    } else if (keyCode == RIGHT) {
+      paddleRight = false;
     }
+  }
+}
+
+void mousePressed() {
+  // the button click in game over screen & resets the game
+  if (325<mouseX && mouseX<745 && (height/2-175)<mouseY && mouseY<(height/2-140) && gameOver) {
+    paddleX = width/2-80;
+    currentGame.addScore();
+    currentGame = new ScoreKeeping();
+    ball.reset();
+    //reset board  
+    currentLevel = 1;
+    Bricks.clear();
+    levelStart = true;
+    gameOver = false;
+    levelHandler.Load(currentLevel);
+
   }
 }
