@@ -1,5 +1,6 @@
 ArrayList <Brick> Bricks;
 ArrayList <Powerup> Powerups;
+ArrayList <Laser> Lasers;
 Ball ball;
 color backColor = color(255, 215, 0);
 float initialBallX;
@@ -28,6 +29,7 @@ void setup() {
   powup = new PImage[]{loadImage("heart.png"), loadImage("hourglass.png"), loadImage("powerup.png"), loadImage("laser.png")};
   Bricks = new ArrayList<Brick>();
   Powerups = new ArrayList<Powerup>();
+  Lasers = new ArrayList<Laser>();
   size(1062, 600);
   background(backColor);
 
@@ -41,6 +43,12 @@ void setup() {
 
 void draw() {
   background(backColor);
+  
+  for (Laser l : Lasers) {
+    if (l.health > 0) {
+      l.move();
+    }
+  }
   
   if (state == MenuState.MAIN) {
     fill(0);
