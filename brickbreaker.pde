@@ -7,7 +7,7 @@ float ballSize = 30;
 float initialBallY;
 boolean gameOver = false;
 PImage paddle;
-PImage powup;
+PImage[] powup;
 int paddleX;
 boolean paddleLeft = false, paddleRight = false;
 //Level start is the indicator that the level has begun (ball is stationary)
@@ -25,7 +25,7 @@ MenuState state = MenuState.MAIN;
 void setup() {
   paddleX = width/2-80;
   paddle = loadImage("paddle.png");
-  powup = loadImage("powerup.png");
+  powup = new PImage[]{loadImage("heart.png"), loadImage("hourglass.png"), loadImage("powerup.png"), loadImage("laser.png")};
   Bricks = new ArrayList<Brick>();
   Powerups = new ArrayList<Powerup>();
   size(1062, 600);
