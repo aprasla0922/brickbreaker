@@ -16,6 +16,12 @@ Level levelHandler;
 int currentLevel = 1;
 ScoreKeeping currentGame;
 
+enum MenuState {
+  MAIN, PLAYING, HIGHSCORE;
+}
+
+MenuState state = MenuState.MAIN;
+
 void setup() {
   paddleX = width/2-80;
   paddle = loadImage("paddle.png");
@@ -35,7 +41,26 @@ void setup() {
 
 void draw() {
   background(backColor);
-  image(paddle, paddleX, 565, paddle.width/3, paddle.height/6);
+  
+  if (state == MenuState.MAIN) {
+    fill(0);
+    textSize(100);
+    text("Brickbreaker", 225, 100);
+    textSize(50);
+    text("Play", width/2 - 75, 300, 200, 80);
+    text("Highscores", width/2 - 150, 380, 450, 80);
+  } else if (state == MenuState.HIGHSCORE) {
+    Highscore highscore = new Highscore();
+    highscore.readHighscore(); 
+    textSize(20);
+    text("Highscores:", 445, height/4 - 35);
+      for(int i =0; i<10; i++){
+        text(highscore.highscores[i][0] + "        " + highscore.highscores[i][1], 450, height/4 + i*25);
+      }
+      textSize(50);
+      text("Main menu", width/2 - 150, height - 100, 450, 80);
+  } else {
+    image(paddle, paddleX, 565, paddle.width/3, paddle.height/6);
   currentGame.display();
   levelHandler.Load(currentLevel);
   //image(paddle,paddleX+50,565,paddle.width/6,paddle.height/6);
@@ -69,6 +94,7 @@ void draw() {
     }
   } else{
     Bricks.clear();
+  }
   }
 }
 
@@ -120,7 +146,27 @@ void mousePressed() {
     Bricks.clear();
     levelStart = true;
     gameOver = false;
-    levelHandler.Load(currentLevel);
+    //levelHandler.Load(currentLevel);
+    state = MenuState.MAIN;
+  } else if (state == MenuState.MAIN) {
+    if (overRect(width/2 - 75, 300, 4 * 50, 80)) { //"play"
+       state = MenuState.PLAYING;
+    } else if (overRect(width/2 - 150, 380, 9 * 50, 80)) { //"highscore"
+      state = MenuState.HIGHSCORE;
+    }
+  } else if (state == MenuState.HIGHSCORE) {
+    if (overRect(width/2 - 150, height - 100, 450, 80)) {
+      state = MenuState.MAIN;
+    }
+  }
+}
 
+
+boolean overRect(int x, int y, int width, int height)  {
+  if (mouseX >= x && mouseX <= x+width && 
+      mouseY >= y && mouseY <= y+height) {
+    return true;
+  } else {
+    return false;
   }
 }
