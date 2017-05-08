@@ -4,6 +4,7 @@ AudioPlayer bounce;
 AudioPlayer laser;
 AudioPlayer bgsound;
 Minim minim;  // audio context
+boolean musicOn = true;
 
 ArrayList <Brick> Bricks;
 ArrayList <Powerup> Powerups;
@@ -67,6 +68,8 @@ void draw() {
     fill(0);
     textSize(100);
     text("Brickbreaker", 225, 100);
+    textSize(20);
+    text("Press M to toggle music", width/2-125, 200, 250, 80);
     textSize(50);
     if (overRect(width/2 - 75, 300, 4 * 50, 80)) fill(200,0,0);
     else fill(0);
@@ -148,6 +151,15 @@ void keyPressed() {
   }
   if (key == ' ') {
     levelStart = false;
+  }
+  if(key=='m' || key=='M'){
+    if(musicOn){
+      bgsound.pause();
+      musicOn = false;
+    }else{
+      bgsound.loop();
+      musicOn = true;
+    }
   }
 }
 
