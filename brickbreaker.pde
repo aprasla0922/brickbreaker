@@ -1,3 +1,10 @@
+import ddf.minim.*;
+
+AudioPlayer bounce;
+AudioPlayer laser;
+AudioPlayer bgsound;
+Minim minim;  // audio context
+
 ArrayList <Brick> Bricks;
 ArrayList <Powerup> Powerups;
 ArrayList <Laser> Lasers;
@@ -24,6 +31,12 @@ enum MenuState {
 MenuState state = MenuState.MAIN;
 
 void setup() {
+  minim = new Minim(this);
+  bounce = minim.loadFile("click.mp3");
+  laser = minim.loadFile("laser.mp3");
+  bgsound = minim.loadFile("background.mp3");
+  bgsound.loop();
+  
   paddleX = width/2-80;
   paddle = loadImage("paddle.png");
   powup = new PImage[]{loadImage("heart.png"), loadImage("hourglass.png"), loadImage("powerup.png"), loadImage("laser.png")};
@@ -55,9 +68,14 @@ void draw() {
     textSize(100);
     text("Brickbreaker", 225, 100);
     textSize(50);
+    if (overRect(width/2 - 75, 300, 4 * 50, 80)) fill(200,0,0);
+    else fill(0);
     text("Play", width/2 - 75, 300, 200, 80);
+    if (overRect(width/2 - 150, 380, 9 * 50, 80)) fill(200,0,0);
+    else fill(0);
     text("Highscores", width/2 - 150, 380, 450, 80);
   } else if (state == MenuState.HIGHSCORE) {
+    fill(0);
     Highscore highscore = new Highscore();
     highscore.readHighscore(); 
     textSize(20);
@@ -66,6 +84,8 @@ void draw() {
         text(highscore.highscores[i][0] + "        " + highscore.highscores[i][1], 450, height/4 + i*25);
       }
       textSize(50);
+      if (overRect(width/2 - 150, height - 100, 450, 80)) fill(200,0,0);
+      else fill(0);
       text("Main menu", width/2 - 150, height - 100, 450, 80);
   } else {
     image(paddle, paddleX, 565, paddle.width/3, paddle.height/6);
@@ -169,6 +189,14 @@ void mousePressed() {
   }
 }
 
+// closing the app
+void stop(){
+ bounce.close();
+ laser.close();
+ bgsound.close();
+ minim.stop();
+ super.stop();
+}
 
 boolean overRect(int x, int y, int width, int height)  {
   if (mouseX >= x && mouseX <= x+width && 

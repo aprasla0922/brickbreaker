@@ -25,7 +25,6 @@ class Laser{
     if (lasery < -50) {
       health--;
       reset();
-
     }
     
     for (int i = 0; i < Bricks.size(); i ++){

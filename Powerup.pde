@@ -30,6 +30,7 @@ class Powerup{
       } else if (type == 3) {
         System.out.println("laser");
         Lasers.add(new Laser(paddleX+paddle.width/6,565));
+        laser.play();    // laser sound effect
       }
       Powerups.remove(this);
       return;

@@ -103,11 +103,13 @@ class Ball {
     //bounce against walls
     if(xpos < size/2 || xpos > (width - size/2)){
       vx = vx * -1;
+      bounce.play(0);  // bouncing sound
      //addSparkles();
     }
     if (ypos < size/2){
       vy = vy * -1;
       //addSparkles();
+       bounce.play(0);  // bouncing sound
     }
     
     //ball hits paddle
@@ -115,6 +117,7 @@ class Ball {
       vy = vy*-1;
       ypos = ypos -7;
       addSparkles();
+      bounce.play(0);  // bouncing sound
     }
     
     //ball dies
@@ -136,6 +139,7 @@ class Ball {
       }else if(isBetween(xpos,current.xpos,current.xpos + current.size*3) && isBetween(ypos,current.ypos,current.ypos +current.size)){
         //deletes bricks
         Bricks.get(i).die(true);
+        bounce.play(0);  // bouncing sound
         //figure out what happens to bounce
         if(ypos < current.ypos + 7){
           vy = vy * -1;
